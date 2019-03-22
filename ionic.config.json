@@ -1,6 +1,8 @@
 {
   "name": "budget-buddy",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "37f0b1f8"
 }
