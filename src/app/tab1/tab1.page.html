@@ -8,20 +8,18 @@
 
 <ion-content>
 <ion-row>
-  <ion-col>
-    <ion-card class="mainBudget">
+  <ion-col class="main">
+    <ion-text class="noBudget" *ngIf="budget === null">
+      <h4>Looks like you don't have a budget</h4>
+      <h4>Add one below</h4>
+    </ion-text>
+    <ion-card  *ngIf="budget !== null">
     <ion-card-content>
-        <ion-item>
-          <ion-label>Paycheck Date</ion-label>
-          <ion-datetime displayFormat="MMM DD YY" placeholder="Select Date"></ion-datetime>
-        </ion-item>
-        <ion-input placeholder="Paycheck Amount" type="number"></ion-input>
-        <ion-input placeholder="Expense" type="number"></ion-input>
-        <ion-input placeholder="Expense" type="number"></ion-input>
-        <ion-input placeholder="Expense" type="number"></ion-input>
-        <ion-input placeholder="Expense" type="number"></ion-input>
-        <ion-input placeholder="Expense" type="number"></ion-input>
-        <ion-input placeholder="Expense" type="number"></ion-input>
+      {{budget.paycheckDate}}
+      {{budget.paycheckAmount}}
+      {{budget.expense1}}
+      {{budget.expense2}}
+      {{budget.expense3}}
       </ion-card-content>
     </ion-card>
   </ion-col>
