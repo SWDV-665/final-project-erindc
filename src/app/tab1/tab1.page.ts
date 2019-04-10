@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 
 @Component({
   selector: 'app-tab1',
@@ -7,87 +8,50 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  constructor(public alertController: AlertController) {}
-
-  budget = null;
-  payDate: Date = new Date();
-
-  addBudget() {
-    this.showBudgetPrompt()
+  paycheckDate: Date;
+  budget: {
+    paycheckDate: Date,
+    paycheckAmount: number,
+    expenseAmount1: number,
+    expenseName1: string,
+    expenseAmount2: number,
+    expenseName2: string,
+    expenseAmount3: number,
+    expenseName3: string,
+    expenseAmount4: number,
+    expenseName4: string,
+    expenseAmount5: number,
+    expenseName5: string,
+    expenseAmount6: number,
+    expenseName6: string,
+  }
+  constructor(public alertController: AlertController, private datePicker: DatePicker) {
+    console.log(this.budget);
   }
 
-  async showBudgetPrompt() {
-    const budgetPrompt = await this.alertController.create({
-      header: 'New Budget',
-      inputs: [
-        {
-          name: 'paycheckDate',
-          id: 'payDate',
-          type: 'date',
-          placeholder: 'Paycheck Date',
-          value: this.payDate
-        },
-        {
-          name: 'paycheckAmount',
-          type: 'number',
-          id: 'payAmount',
-          placeholder: 'Paycheck Amount'
-        },
-        {
-          name: 'expense1',
-          type: 'number',
-          id: 'expense1',
-          placeholder: 'Expense'
-        },
-        {
-          name: 'expense2',
-          type: 'number',
-          id: 'expense2',
-          placeholder: 'Expense'
-        },
-        {
-          name: 'expense3',
-          type: 'number',
-          id: 'expense3',
-          placeholder: 'Expense'
-        },
-        {
-          name: 'expense4',
-          type: 'number',
-          id: 'expense4',
-          placeholder: 'Expense'
-        },
-        {
-          name: 'expense5',
-          type: 'number',
-          id: 'expense5',
-          placeholder: 'Expense'
-        },
-        {
-          name: 'expense6',
-          type: 'number',
-          id: 'expense6',
-          placeholder: 'Expense'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Ok',
-          handler: (data) => {
-            this.budget = data;
-          }
-        }
-      ]
-    });
+  saveBudget(payDate, payAmount, exp1, expN1, exp2, expN2, exp3, expN3, exp4, expN4, exp5, expN5, exp6, expN6) {
+    this.budget = { 
+      paycheckDate: new Date(payDate), 
+      paycheckAmount: payAmount, 
+      expenseAmount1: exp1, 
+      expenseName1: expN1,
+      expenseAmount2: exp2,
+      expenseName2: expN2,
+      expenseAmount3: exp3,
+      expenseName3: expN3,
+      expenseAmount4: exp4, 
+      expenseName4: expN4,
+      expenseAmount5: exp5,
+      expenseName5: expN5,
+      expenseAmount6: exp6,
+      expenseName6: expN6
+    }
+    console.log(this.budget);
+  }
 
-    await budgetPrompt.present();
+  onDateEntry(value: string) {
+    this.paycheckDate = new Date(value);
+    console.log(this.paycheckDate)
   }
 }
 
