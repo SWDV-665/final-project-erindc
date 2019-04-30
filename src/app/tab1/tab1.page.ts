@@ -1,57 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { DOCUMENT } from '@angular/common'; 
+
 import { DatePicker } from '@ionic-native/date-picker/ngx';
+import { BudgetService } from '../services/budget.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
-  paycheckDate: Date;
-  budget: {
-    paycheckDate: Date,
-    paycheckAmount: number,
-    expenseAmount1: number,
-    expenseName1: string,
-    expenseAmount2: number,
-    expenseName2: string,
-    expenseAmount3: number,
-    expenseName3: string,
-    expenseAmount4: number,
-    expenseName4: string,
-    expenseAmount5: number,
-    expenseName5: string,
-    expenseAmount6: number,
-    expenseName6: string,
-  }
-  constructor(public alertController: AlertController, private datePicker: DatePicker) {
-    console.log(this.budget);
+export class Tab1Page implements OnInit {
+  currentBudget$: Observable<object[]>;
+
+  constructor(@Inject(DOCUMENT) document, public alertController: AlertController, private datePicker: DatePicker, public budgetService: BudgetService) {
+    budgetService.dataChanged$.subscribe((dataChanged: boolean) => {
+      this.getCurrentBudget();
+    });
   }
 
-  saveBudget(payDate, payAmount, exp1, expN1, exp2, expN2, exp3, expN3, exp4, expN4, exp5, expN5, exp6, expN6) {
-    this.budget = { 
-      paycheckDate: new Date(payDate), 
-      paycheckAmount: payAmount, 
-      expenseAmount1: exp1, 
-      expenseName1: expN1,
-      expenseAmount2: exp2,
-      expenseName2: expN2,
-      expenseAmount3: exp3,
-      expenseName3: expN3,
-      expenseAmount4: exp4, 
-      expenseName4: expN4,
-      expenseAmount5: exp5,
-      expenseName5: expN5,
-      expenseAmount6: exp6,
-      expenseName6: expN6
-    }
-    console.log(this.budget);
+  ngOnInit() {
+    this.getCurrentBudget();
   }
 
-  onDateEntry(value: string) {
-    this.paycheckDate = new Date(value);
-    console.log(this.paycheckDate)
+  getCurrentBudget() {
+    this.currentBudget$ = this.budgetService.getCurrentBudget()
+  }
+
+  saveBudget() {
+    this.budgetService.addBudget({
+      paycheckDate: new Date((<HTMLInputElement>document.getElementById('payDate')).value),
+      paycheckAmount: (<HTMLInputElement>document.getElementById('payAmount')).value,
+      expenses: [
+        {amount: (<HTMLInputElement>document.getElementById('exp1')).value, label: (<HTMLInputElement>document.getElementById('expN1')).value}, 
+        {amount: (<HTMLInputElement>document.getElementById('exp2')).value, label: (<HTMLInputElement>document.getElementById('expN2')).value}, 
+        {amount: (<HTMLInputElement>document.getElementById('exp3')).value, label: (<HTMLInputElement>document.getElementById('expN3')).value}, 
+        {amount: (<HTMLInputElement>document.getElementById('exp4')).value, label: (<HTMLInputElement>document.getElementById('expN4')).value}, 
+        {amount: (<HTMLInputElement>document.getElementById('exp5')).value, label: (<HTMLInputElement>document.getElementById('expN5')).value}, 
+        {amount: (<HTMLInputElement>document.getElementById('exp6')).value, label: (<HTMLInputElement>document.getElementById('expN6')).value}
+      ]
+    })
   }
 }
 

@@ -7,81 +7,103 @@
 </ion-header>
 
 <ion-content>
-<ion-row *ngIf="budget === undefined">
-  <ion-col class="main">
-    <ion-item>
-      <ion-label>Paycheck Date</ion-label>
-      <ion-datetime #payDate display-format="MM/DD/YY" picker-format="MM DD YY" value="{{paycheckDate}}"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-input #payAmount placeholder="Paycheck Amount" value="{{paycheckAmount}}" type="number"></ion-input>
-    </ion-item>
+  <div *ngIf="(currentBudget$ | async) === null">
     <ion-row>
-      <ion-item>
-        <ion-col>
-          <ion-input #expAmount1 placeholder="Expense Amount" value="{{expenseAmount1}}" type="number"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input #expName1 placeholder="Expense Name" value="{{expenseName1}}" type="text"></ion-input>
-        </ion-col>
-      </ion-item>
+      <ion-col class="main">
+        <ion-item>
+          <ion-label>Paycheck Date</ion-label>
+          <ion-datetime id='payDate' display-format="MM/DD/YY" picker-format="MM DD YY"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-input id='payAmount' placeholder="Paycheck Amount" type="number"></ion-input>
+        </ion-item>
+        <ion-row>
+          <ion-item>
+            <ion-col>
+              <ion-input id='exp1' placeholder="Expense Amount" type="number"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input id='expN1' placeholder="Expense Name" type="text"></ion-input>
+            </ion-col>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-col>
+              <ion-input id='exp2' placeholder="Expense Amount" type="number"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input id='expN2' placeholder="Expense Name" type="text"></ion-input>
+            </ion-col>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-col>
+              <ion-input id='exp3' placeholder="Expense Amount" type="number"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input id='expN3' placeholder="Expense Name" type="text"></ion-input>
+            </ion-col>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-col>
+              <ion-input id='exp4' placeholder="Expense Amount" type="number"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input id='expN4' placeholder="Expense Name" type="text"></ion-input>
+            </ion-col>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-col>
+              <ion-input id='exp5' placeholder="Expense Amount" type="number"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input id='expN5' placeholder="Expense Name" type="text"></ion-input>
+            </ion-col>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-col>
+              <ion-input id='exp6' placeholder="Expense Amount" type="number"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input id='expN6' placeholder="Expense Name" type="text"></ion-input>
+            </ion-col>
+          </ion-item>
+        </ion-row>
+      </ion-col>
     </ion-row>
+  </div>
+
+  <div *ngIf="(currentBudget$ | async) !== null">
     <ion-row>
-      <ion-item>
-        <ion-col>
-          <ion-input #expAmount2 placeholder="Expense Amount" value="{{expenseAmount2}}" type="number"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input #expName2 placeholder="Expense Name" value="{{expenseName2}}" type="text"></ion-input>
-        </ion-col>
-      </ion-item>
+      <ion-col class="main" *ngFor="let item of currentBudget$ | async; let i = index">
+        <ion-list>
+          <ion-item>
+            {{item.paycheckDate | date:'shortDate'}}: Paycheck Date
+          </ion-item>
+          <ion-item>
+            {{item.paycheckAmount | currency}}: Paycheck Amount
+          </ion-item>
+        </ion-list>
+        <ion-list *ngFor="let exp of item.expenses">
+          <ion-item *ngIf="exp.amount !== ''">
+            {{exp.amount | currency}}: {{exp.label}}
+          </ion-item>
+        </ion-list>
+      </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-item>
-        <ion-col>
-          <ion-input #expAmount3 placeholder="Expense Amount" value="{{expenseAmount3}}" type="number"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input #expName3 placeholder="Expense Name" value="{{expenseName3}}" type="text"></ion-input>
-        </ion-col>
-      </ion-item>
-    </ion-row>
-    <ion-row>
-      <ion-item>
-        <ion-col>
-          <ion-input #expAmount4 placeholder="Expense Amount" value="{{expenseAmount4}}" type="number"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input #expName4 placeholder="Expense Name" value="{{expenseName4}}" type="text"></ion-input>
-        </ion-col>
-      </ion-item>
-    </ion-row>
-    <ion-row>
-      <ion-item>
-        <ion-col>
-          <ion-input #expAmount5 placeholder="Expense Amount" value="{{expenseAmount5}}" type="number"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input #expName5 placeholder="Expense Name" value="{{expenseName5}}" type="text"></ion-input>
-        </ion-col>
-      </ion-item>
-    </ion-row>
-    <ion-row>
-      <ion-item>
-        <ion-col>
-          <ion-input #expAmount6 placeholder="Expense Amount" value="{{expenseAmount6}}" type="number"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input #expName6 placeholder="Expense Name" value="{{expenseName6}}" type="text"></ion-input>
-        </ion-col>
-      </ion-item>
-    </ion-row>
-  </ion-col>
-</ion-row>
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button>
-    <ion-icon *ngIf="budget === undefined" (click)="saveBudget(payDate.value, payAmount.value, expAmount1.value, expName1.value, expAmount2.value, expName2.value, expAmount3.value, expName3.value, expAmount4.value, expName4.value, expAmount5.value, expName5.value, expAmount6.value, expName6.value)" name="checkmark"></ion-icon>
-    <ion-icon *ngIf="budget !== undefined" name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon *ngIf="currentBudget$ === null" (click)="saveBudget()" name="checkmark"></ion-icon>
+        <ion-icon *ngIf="currentBudget$ !== null" name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>
