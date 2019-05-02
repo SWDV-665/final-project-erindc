@@ -19,7 +19,7 @@
           </ion-item>
         </ion-list>
         <ion-list *ngFor="let exp of item.expenses">
-          <ion-item class="expense" *ngIf="exp.amount !== undefined">
+          <ion-item class="expense" *ngIf="exp.amount !== null">
             {{exp.amount | currency}}: {{exp.label}}
           </ion-item>
         </ion-list>
