@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject, Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,13 @@ export class BudgetService {
   }
 
   addBudget(budget) {
-    return this.http.post<object>(this.baseUrl + `/budget`, budget).subscribe(res => {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+
+    return this.http.post<object>(this.baseUrl + `/budget`, budget, httpOptions).subscribe(res => {
       this.budget = res;
       this.dataChangeSubject.next(true);
     });

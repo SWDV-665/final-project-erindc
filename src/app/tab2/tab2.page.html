@@ -1,9 +1,29 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Past Budgets
+      Current Budget
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+  <div *ngIf="(currentBudget$ | async) !== null">
+    <ion-row>
+      <ion-col class="main" *ngFor="let item of currentBudget$ | async">
+        <ion-list>
+          <ion-item class="date">
+          {{item.paycheckDate | date:'shortDate'}}: Paycheck Date
+          </ion-item>
+          <ion-item class="paycheck">
+            {{item.paycheckAmount | currency}}: Paycheck Amount
+          </ion-item>
+        </ion-list>
+        <ion-list *ngFor="let exp of item.expenses">
+          <ion-item class="expense" *ngIf="exp.amount !== undefined">
+            {{exp.amount | currency}}: {{exp.label}}
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
